@@ -1,0 +1,16 @@
+NAME: Vincent Chi
+EMAIL: vincentchi9702@gmail.com
+ID: 304576879
+
+Included files:
+lab3b.sh runs the python script
+Makefile creates the executable lab3b
+	 default: creates executable lab3b
+	 dist: creates the tarball including the README, Makefile, lab3b.py, and lab3b.sh
+	 clean: removes executable lab3b and tarball if exists
+README this file
+lab3b.py the python script that takes 1 arguement , the name of a csv file to be audited
+
+Uses python 2, to work with python 3 jsut remove the from future import print_function line 
+
+

@@ -1,0 +1,60 @@
+NAME: Vincent Chi
+ID: 304576879
+EMAIL: vincentchi9702@gmail.com
+
+make dist takes a while to run when creating the new graphs/getting data
+
+files test_add.sh and test_list.sh are scripts that generate the data for all test cases and append them to csv files, 
+(executed when doing make tests).
+
+must be compiled with std=gnu99
+
+program exits with :
+0: successful run
+1: invalid command-line parameter or system call error
+2: other failures (such as list corruption segfault caught etc.)
+
+QUESTIONS:
+
+2.1.1
+Each thread is created separately, meaning it takes time for a thread to actually start running from the time of its creation.
+So, with a small amount of iterations, a thread may finish before the next is actually created, which means no race condition.
+With a large amount of iterations, the next thread has already finished being created, has begun running, while the current
+thread is still running its iterations, therefore leading to potential race condition.
+
+2.1.2
+while the thread is yielding and relinquishing the cpu, it is not actually running meaning it is just idly waiting. It is moved to 
+the back of the run queue, as the CPU executes another thread. 
+This is done via a context switch by the CPU,  which is expensive and is where that additional time is going towards.
+Since multiple yields may be called at the same time, it is not possible to keep track of valid per-operation timing.
+
+2.1.3
+We're creating threads at the start, so as iteration number gets larger, the threads have already finished being created, thus
+the cpu can just focus running the iterations, meaning less overhead.
+From the plot in lab2-add-2.png and lab2-add-3.png, we see that the graph has high costs initially but declining rapidly until it 
+flattens out and stabilizes. 
+Once the cost vs number of iterations flattens out, that's the correct cost per iteration, as we no longer have to consider the
+thread creation overhead.
+
+2.1.4
+All options perform similarly for a low number of threads because the lower amount of threads there are, the less number of threads
+fighting for control over the lock, meaning that when a thread calls to lock a certain lock, it will succeed sooner and thus get to
+run it's program until it relinquishes the lock again. Consequently, as the number of theads increase, the slower the operations as there
+are more threads that do nothing while waiting for a lock to be available as more threads get moved to the back of the run queue.
+
+2.2.1
+For add, the curve appears to increase noticeably until 4 threads increase much more slowly afterwards. This is because the operation
+complexity does not increase with the number of threads, as each iteration is simply adding to a counter, which is constant time.
+For list, there is a clear linear growth and the cost/operation grows much more quickly with the number of threads than with add. This is due to the 
+fact that each thread is responsible for a set number of iterations, so deleting / inserting  (linear time) would take much longer the larger the
+list is, which increases directly proportional to the number of threads.
+
+2.2.2
+For list, spinlock's cost/operation also increase linearly, directly proportional to the number of threads as with mutex for the same reason.
+The rate of increase for spinlock is roughly the same for that of mutex for list, if not slightly higher.
+For  add, we see that spinlock has a clearly higher rate of increase as well as an overall higher operation cost time. This is because
+spin locking is busy waiting, and the cpu is not being given up as a thread is spinlocked, which means the cpu usage is being wasted leading to a higher
+operation cost for the same result as when using mutex, which yields the cpu being used by the thread so that another thread can make use of it.
+
+
+

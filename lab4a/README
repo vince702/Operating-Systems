@@ -1,0 +1,27 @@
+
+NAME: VINCENT CHI
+EMAIL: vincentchi9702@gmail.com
+ID: 304576879
+
+SN: BBGW17100721
+MAC: 2CF7F1066E79
+WIFI: VincentC             wifi_587a62310b55_56696e63656e7443_managed_psk
+      (personal phone hotspot)
+
+
+Contents:
+
+	a selfie (my_beaglebone.jpg) of me holding my  assembled Beaglebone (showing the front of the board) 
+	with attatched sensors/cape
+	
+	a screen shot (connected.png) from a USB terminal command session connected to my system,
+	 giving it a name and configured network access.
+	
+	a screen shot (copy.png) from a local session in which I copy a hello world program from my 
+	laptop/desktop to my Beaglebone
+	
+	a screen shot (build_run.png) from a WIFI SSH session in which I build and run a trivial (hello world) program.
+	
+	a screen shot (git.png) from a WIFI SSH session in which I install git and clone a repository.
+	
+	a Makefile to build the tarball.

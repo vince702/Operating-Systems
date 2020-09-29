@@ -1,0 +1,72 @@
+NAME: Vincent Chi
+ID: 304576879
+EMAIL: vincentchi9702@gmail.com
+SLIPDAYS: 1
+make dist takes a while to run when creating the new graphs/getting data
+
+files test2b.sh script that generate the data for all test cases and append them to csv files, 
+(executed when doing make tests).
+
+must be compiled with std=gnu99
+
+program exits with :
+0: successful run
+1: invalid command-line parameter or system call error
+2: other failures (such as list corruption segfault caught etc.)
+
+QUESTIONS:
+
+2.3.1
+Most of the cpu time is probably being spent looking up the elements in the list for the list operations.
+
+They are the most expensive parts of the code because it takes O(N) time and scales linearly with the size of the list 
+to perform list operations. Since we're only using 1/2 threads, there isn't much contention for the locks, and
+not as much context switching.
+
+For high thread spin locking, since spin lock is a form of busy waiting, if there are a lot of threads there will be
+a lot of contention for the lock so a lot of waiting. The cpu will remain busy while waiting as well, so most of the 
+time is likely spent busy waiting.
+
+For high thread mutex, there will be a lot of context switches as there are more threads fighting for ownership of the lock,
+So most of the time will likely be spent on context switching, which is expensive.
+
+Of course, this is assuming the lists aren't completely enormous to the point where looking up a single element takes longer.
+
+2.3.2
+Spinlock takes the most with 711/1330:
+
+while (__sync_lock_test_and_set(&spinlock_locklist[sublist_num], 1)){
+      continue;
+}
+The code checks whether or not the spin lock is open.
+
+Spinlock checking becomes expensive with large number of threads because there is more contention for the lock with more
+threads, and as mentioned above, since spin lock is a form of busy waiting, the cpu is not doing any other work  but instead
+wasting its cycles on polling the spin lock.
+
+2.3.3
+With more threads comes more contention for a lock, meaning it must Wait for more threads to finish their critical section before
+getting a hold of it, which means longer waiting.
+
+Completion time rises less dramatically than wait time because while it factors in context switching which increases in occurrence
+with the more threads there are as well as creation of the threads itself, it does not factor in all the time spent waiting by 
+every other thread, which the total wait time does when calculating the average, so it still increases the time, but just less 
+dramatically.
+
+Each thread needs to wait while another thread does it's operation, meaning the wait times overlap, and the operation time, which is
+the real time taken to finish an operation, does not count overlapped time in its sum, while wait time does, so that is why wait time can be 
+higher than completion time.
+
+2.3.4
+
+The more sublists we have, the smaller the list we need to loop through as we perform our list operations,
+meaning it will take less time as then we only need to loop through one sublist. Furthermore, since each list has it's own corresponding lock, threads will 
+likely not have to wait as much, as it is much less likely to be contending for the same lock now.
+
+The throughput will continue to increase with the number of lists until we reach a cap where the size of the lists are extremely small to the point where more lists will have a negligible effect on throughput, and it'll be as if we are just declaring a new SortedList on each iteration, in which
+If the goal of our program was to rejoin the lists at the end instead of just experimenting/deleting right away, that will take a lot of time. 
+
+No, throughput is still higher for more lists, as the amount of time saved from having sublists of smaller size and thus less time spent on list operations ,
+manifests in the critical section, which means less time spent by other threads waiting, if at all as since each sublist has its own lock, the likelihood 
+of waiting is much less. 1/N threads would mean potentially less context switches/overhead from thread creation, but the list operations themselves take to
+long compared to those for the sublists.

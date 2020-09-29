@@ -1,0 +1,28 @@
+NAME: VINCENT CHI
+EMAIL: vincentchi9702@gmail.com
+ID: 304576879
+
+
+Contents: 
+	lab4c_tcp.c, the source code for the application for the TCP connection
+	lab4c_tls.c, code for TLS connection
+	Makefile, 
+		dist builds the tarball
+		clean removes tarball and generated executable
+		logs the shutdown
+		default generates lab4b, the executable
+	
+notes:
+	I had to build the mraa library myself, and such for development I used 
+	
+        sensor = mraa_aio_init(0); 
+
+	for initializing the temperature sensors, but in the tutorial it uses 1 instead of 0, thus in the included file
+	I used 1 instead of 0.
+
+	I also changed some exit codes from lab4b, as the spec before didn't mention any. Exit code guide
+
+Sources:
+	guides/tutorials I used for Open SSL:
+		https://wiki.openssl.org/index.php/Simple_TLS_Server
+		https://www.openssl.org/docs/manpages.html

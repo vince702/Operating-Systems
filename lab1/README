@@ -1,0 +1,18 @@
+NAME: Vincent Chi
+ID: 304576879
+EMAIL: vincentchi9702@gmail.com
+
+test cases for make check:
+case 1 tests proper opening with flags rdonly and wronly
+case 2 tests if commands can be run and 3 files can be opened
+case 3 tests proper handling of error when trying to access a "future" file, 
+     ie. one that hasn't been opened yet by simpsh
+
+limitations:
+must be compiled with std=gnu99, if run with c99 like for part a, some file opening
+flags are undeclared. 
+
+passes all 25 given test cases.
+ --profile not implemented yet. 
+when command with required argument is run without a provided argument, defaults to default
+case in switch. 

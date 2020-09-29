@@ -1,0 +1,23 @@
+NAME: VINCENT CHI
+EMAIL: vincentchi9702@gmail.com
+ID: 304576879
+
+Contents: 
+	lab4b.c, the source code for the application
+	check.sh, the shell script to run the smoke test
+	Makefile, 
+		dist builds the tarball
+		clean removes tarball and generated executable
+		check performs the smoke test by running check.sh
+			-smoke test checks whether program runs smoothly with sensors and logs the shutdown
+		default generates lab4b, the executable
+	
+notes:
+	I had to build the mraa library myself, and such for development I used 
+	
+        sensor = mraa_aio_init(0); 
+
+	for initializing the temperature sensors, but in the tutorial it uses 1 instead of 0, thus in the included file
+	I used 1 instead of 0.
+
+
